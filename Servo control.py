@@ -3,13 +3,13 @@ import time
 
 ser = serial.Serial()
 
-ser.baudrate = 115200
+ser.baudrate = 9600
 ser.port = 'COM6'
 ser.timeout = 0.5
 ser.open()
 
 print(ser.name)
-
+ser.read(b'r')
 time.sleep(1)
 
 while True:
@@ -17,24 +17,31 @@ while True:
     ser.write(b'@')
     time.sleep(1)
 
-    # 1st servo
+    ser.read(b'r')
+
+    # 1st servo horizonal
     ser.write(b'0')
-    ser.write('A'.encode('ascii'))  #A stands for a value of 97 or smth that is equal to and angular position of the servo
+    ser.write('0'.encode('ascii'))  #A stands for a value of 97 or smth that is equal to an angular position of the servo
 
     time.sleep(1)
 
     ser.write(b'0')
+    ser.write('a'.encode('ascii'))
+
+    time.sleep(0.5)
+
+    # 2nd servo vertical
+    ser.write(b'1')
+    ser.write('0'.encode('ascii'))
+
+    time.sleep(0.5)
+
+    ser.write(b'1')
     ser.write('z'.encode('ascii'))
 
-    time.sleep(1)
+    ser.write(b'r')
+    ser.write('1'.encode('ascii'))
 
-    # 2nd servo
-    ser.write(b'1')
-    ser.write('A'.encode('ascii'))
+    time.sleep(0.5)
 
-    time.sleep(1)
-
-    ser.write(b'1')
-    ser.write('z'.encode('ascii'))
-
-    time.sleep(1)
+  #  print(ser.read(b'r'))
