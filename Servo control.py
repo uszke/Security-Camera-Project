@@ -9,7 +9,7 @@ ser.timeout = 0.5
 ser.open()
 
 print(ser.name)
-ser.read(b'r')
+#ser.read(b'r')
 time.sleep(1)
 
 while True:
@@ -39,8 +39,8 @@ while True:
     ser.write(b'1')
     ser.write('z'.encode('ascii'))
 
-    ser.write(b'r')
-    ser.write('1'.encode('ascii'))
+    #ser.write(b'r')
+    #ser.write('1'.encode('ascii'))
 
     time.sleep(0.5)
 
