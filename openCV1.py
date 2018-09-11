@@ -10,7 +10,7 @@ for pos in range (80,300,5):
 
 def setup():
     ser.baudrate = 115200
-    ser.port = 'COM3'
+    ser.port = 'COM6'
     ser.open()
 
 

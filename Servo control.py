@@ -3,7 +3,7 @@ import time
 
 ser = serial.Serial()
 
-ser.baudrate = 9600
+ser.baudrate = 115200
 ser.port = 'COM6'
 ser.timeout = 0.5
 ser.open()
@@ -12,12 +12,12 @@ print(ser.name)
 #ser.read(b'r')
 time.sleep(1)
 
-while True:
+while ser.read(b'r'):
     # ping
     ser.write(b'@')
     time.sleep(1)
 
-    ser.read(b'r')
+    #ser.read(b'r')
 
     # 1st servo horizonal
     ser.write(b'0')
@@ -39,7 +39,7 @@ while True:
     ser.write(b'1')
     ser.write('z'.encode('ascii'))
 
-    #ser.write(b'r')
+    #ser.read(b'r')
     #ser.write('1'.encode('ascii'))
 
     time.sleep(0.5)

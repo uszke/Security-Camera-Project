@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "ardpythpirtest\\ardpythpirtest.ino",
+    "port": "COM6"
+}
