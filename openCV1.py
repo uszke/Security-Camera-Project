@@ -20,7 +20,7 @@ def setpantilt(x,y):
 
 
 setup()
-setpantilt(90, 40)
+setpantilt(90, 25)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # https://github.com/Itseez/opencv/blob/master/data/haarcascades/haarcascade_eye.xml
 #eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
@@ -29,7 +29,7 @@ cap = cv2.VideoCapture(1)
 
 
 tiltX = 90
-tiltY = 40
+tiltY = 25
 
 
 time.sleep(1)
@@ -57,14 +57,13 @@ while 1:
         if (x < 100):
             tiltX += 2
             setpantilt(tiltX, tiltY)
-        if(y > 30):
+        if(y > 60):
             tiltY += 2
             setpantilt(tiltX, tiltY)
-        if(y < 180):
+        if(y < 150):
             tiltY -= 2
             setpantilt(tiltX, tiltY)
-        else:
-            break
+
 
 
 
