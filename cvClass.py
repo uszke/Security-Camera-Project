@@ -5,7 +5,7 @@ import time
 
 
 ser = serial.Serial()
-ser.open()
+
 
 
 class camera:
@@ -21,8 +21,10 @@ class camera:
         ser.write(bytearray([self.setupPan, self.setPan]))
         ser.write(bytearray([self.setupTilt, self.setTilt]))
     def detection(self):
+        face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
         ret, img = cap.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
 
         faces = face_cascade.detectMultiScale(gray, 1.1, 3)
 
@@ -30,24 +32,24 @@ class camera:
             cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
             roi_gray = gray[y:y + h, x:x + w]
             roi_color = img[y:y + h, x:x + w]
-            print('X :', x, 'Y :', y)
+
 
             if (self.setPan > 120 & self.setPan < 200):
                 print('Standby')
             if (self.setTilt > 70 & self.setTilt < 140):
                 print('Standby')
             if (self.setPan > 250):
-                self.setPan -= 2
-                camera.setpantilt(self.setPan,self.setTilt)
+                self.panDegree -= 2
+                camera.setpantilt(self.panDegree, self.tiltDegree)
             if (self.setPan < 100):
-                self.setPan += 2
-                camera.setpantilt(self.setPan, self.setTilt)
+                self.panDegree += 2
+                camera.setpantilt(self.panDegree, self.tiltDegree)
             if (self.setTilt > 30):
-                self.setTilt += 2
-                camera.setpantilt(self.setPan, self.setTilt)
+                self.tiltDegree += 2
+                camera.setpantilt(self.panDegree, self.tiltDegree)
             if (self.setTilt < 180):
-                self.setTilt -= 2
-                camera.setpantilt(self.setPan, self.setTilt)
+                self.tiltDegree -= 2
+                camera.setpantilt(self.panDegree, self.tiltDegree)
 
             cv2.imshow('img', img)
             k = cv2.waitKey(30) & 0xff
@@ -65,16 +67,22 @@ class arduino:
         self.baudrate = baudrate
         self.port = port
 
+    def setup(self):
+        ser.baudrate = self.baudrate
+        ser.port = self.port
+
 
 # setupPan = Servo '0' address, setupTilt  = Servo '1' address, setPan = Start position, setTilt  = Start position
 # panDegree = Controls sweeping, tiltdegree = controls tilting, haarFace = haarcascade frontalface xml file
 cameraSetup = camera(48, 49, 90, 40, 90, 40, 'haarcascade_frontalface_default.xml')
 arduinoSetup = arduino(115200, 'COM3')
-arduino.setup()
-face_cascade = cv2.CascadeClassifier(camera.haarFace)
+arduino.setup(arduinoSetup)
+ser.open()
 cap = cv2.VideoCapture(1)
 
-while True:
+while 1:
+    camera.detection(cameraSetup)
+
 
 
 
