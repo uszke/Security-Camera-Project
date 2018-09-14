@@ -14,8 +14,8 @@ Servo pan,tilt;  // create servo object to control a servo
 // twelve servo objects can be created on most boards
 
 int INPUT_PIN = 7;
-int pirState = LOW;
-int val = 0;
+int buttonState = HIGH;
+int val = 1;
 
 
 void setup ()
@@ -39,46 +39,51 @@ int myGetchar ()
 
 void loop ()
 {
+  buttonState = digitalRead(INPUT_PIN);
+
   unsigned int pin ;
   unsigned int aVal, dVal ;
   int pos ;
  // int pirState = digitalRead(pirSensor);
  // Serial.println(pirState);
-  for (;;)
-  {
-    if (Serial.available () > 0)
+  if (buttonState == 0){
+    Serial.println(buttonState);
+    for (;;)
     {
-      switch (myGetchar ())
+      if (Serial.available () > 0)
       {
-        case CMD_PING:
-          Serial.write (CMD_PING) ;
-          continue ;
-                    
+        switch (myGetchar ())
+        {
+          case CMD_PING:
+            Serial.write (CMD_PING) ;
+            continue ;
+                      
 
-        case CMD_SERVO_PIN_2: //pan
-          pos  = myGetchar () ;
-          if ((pos >= 0) && (pos <= 180))
-            pan.write(pos);
-          continue ;
-
-
-        case CMD_SERVO_PIN_3:  //tilt
-          pos  = myGetchar () ; 
-          if ((pos >= 0) && (pos <= 180))
-            tilt.write(pos);
-          continue ;    
+          case CMD_SERVO_PIN_2: //pan
+            pos  = myGetchar () ;
+            if ((pos >= 0) && (pos <= 180))
+              pan.write(pos);
+            continue ;
 
 
-        case CMD_RD_PIN:
-          pin = myGetchar () ;
-          if ((pin >= 5) && (pin <= 7))
-            val = digitalRead (INPUT_PIN) ;
-          else
-            val = LOW ;
-          Serial.write ((val == HIGH) ? '1' : '0') ;
-          continue ;
+          case CMD_SERVO_PIN_3:  //tilt
+            pos  = myGetchar () ; 
+            if ((pos >= 0) && (pos <= 180))
+              tilt.write(pos);
+            continue ;    
 
 
+          case CMD_RD_PIN:
+            pin = myGetchar () ;
+            if ((pin >= 5) && (pin <= 7))
+              val = digitalRead (INPUT_PIN) ;
+            else
+              val = LOW ;
+            Serial.write ((val == HIGH) ? '1' : '0') ;
+            continue ;
+
+
+        }
       }
     }
   }
